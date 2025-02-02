@@ -1,84 +1,154 @@
-# railway-api
+# Railway Management System API 🚂
+
+A simple API for managing train bookings and schedules. Built with Node.js, Express, and MySQL.
+
+## Prerequisites
+
+### 1. Install MySQL
+- Download and install MySQL from [official website](https://dev.mysql.com/downloads/)
+- Start MySQL service
+- Create database:
+```sql
+CREATE DATABASE railway_db;
+```
+
+### 2. Set Up Environment
+Create a `.env` file and add these details:
+```env
+# Database 
+DB_HOST=localhost
+DB_USER=root         
+DB_PASS=yourpassword  
+DB_NAME=railway_db    
+
+# API 
+PORT=5000
+JWT_SECRET=your_jwt_secret
+ADMIN_API_KEY=your_admin_api_key
 
 
-Welcome to the Railway API project! This API provides various endpoints to manage and retrieve information about railway operations.
+## Project Setup
 
-## Table of Contents
+1. Create project folder:
+```bash
+mkdir railway-api && cd railway-api
+```
 
-- [Introduction](#introduction)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Endpoints](#endpoints)
-- [Contributing](#contributing)
+2. Create these folders:
+```bash
+mkdir config models routes middlewares
+```
 
-## Introduction
+3. Create main files:
+```bash
+touch server.js .env README.md
+```
 
-The Railway API allows users to interact with railway data, including train schedules, station information, and ticket bookings.
-1. Register a User
-   Create an endpoint for registering a user.
-2. Login User
-   Provide the ability to the user to log into his account
-3. Add a New Train
-   An endpoint for the admin to create a new train with a source and destination
-4. Get Seat Availability
-   Create an endpoint for the users where they can enter the source and destination and fetch all the trains between that route with their availabilities.
-5. Book a Seat
-   Create an endpoint for the users to book a seat on a particular train
-6. Get Specific Booking Details
-   Create an endpoint for the users to book a seat on a particular train
-
+Your project will look like this:
+```
+railway-api/
+├── config/        
+├── models/        
+├── routes/        
+├── middlewares/   
+└── server.js      # Main file
+```
 
 ## Installation
 
-To install the Railway API, follow these steps:
+1. Install Dependencies
+```bash
+npm install express mysql2 sequelize dotenv jsonwebtoken bcryptjs body-parser cors helmet morgan
+```
 
-1. Clone the repository:
-    bash
-    git clone https://github.com/Srvshkdm/railway-api
-    
-2. Navigate to the project directory:
-    bash
-    cd railway-api
-    
-3. Install the dependencies:
-    bash
-    npm install
-    
+2. Start Server
+```bash
+node server.js
+```
 
-## Usage
+## Testing Guide
 
-To start the server, run:
-
-npm start
+**1)Download Postman in your PC**
+**2)Click New on Top left Corner n Select HTTP to test requests**
+**3)Select Method Type (POST,GET)**
+**4)Paste the Url Provided**
+**5)Change Headers n Body accordingly [Body is in json paste it as raw]**
+**6)Send the Methods**
 
 
-The API will be available at http://localhost:5000.
 
-## Endpoints
+### 1. Register a User
+```bash
+ POST http://localhost:5000/api/auth/register \
+ "Content-Type: application/json" \
+   '{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "password",
+    "role": "user"
+}'
+```
 
-### Get Train Schedules
+### 2. Login to Get Token
+```bash
+ POST http://localhost:5000/api/auth/login \
+"Content-Type: application/json" \
+'{
+    "email": "john@example.com",
+    "password": "password"
+}'
+```
+Response:
+```json
+{
+    "token": "your_jwt_token_here"
+}
+```
 
-- URL: /api/trains
-- Method: GET
-- Description: Retrieve a list of train schedules.
+### 3. Add a Train (Admin Only)
+```bash
+ POST http://localhost:5000/api/trains \
+"Content-Type: application/json" \
+"admin-api-key: your_admin_api_key" \
+-'{
+    "name": "Express 101",
+    "source": "City A",
+    "destination": "City B",
+    "totalSeats": 50
+}'
+```
 
-### Get Station Details
+### 4. Book a Seat
+```bash
+POST http://localhost:5000/api/bookings/1
+"Content-Type: application/json" 
+"Authorization: your_jwt_token_here"
+```
 
-- URL: /api/stations/:id
-- Method: GET
-- Description: Get details of a specific station by ID.
+### 5. View Your Bookings
+```bash
+GET http://localhost:5000/api/bookings 
+"Authorization: your_jwt_token_here"
+```
 
-### Book Ticket
+## API Endpoints Summary
 
-- URL: /api/tickets
-- Method: POST
-- Description: Book a new ticket.
+### Users
+- `POST /api/auth/register` - Create new account
+- `POST /api/auth/login` - Login to account
 
-### Cancel Ticket
+### Trains
+- `GET /api/trains` - View available trains
+- `POST /api/trains` - Add new train (Admin only)
 
-- URL: /api/tickets/:id
-- Method: DELETE
-- Description: Cancel a ticket by ID.
+### Bookings
+- `POST /api/bookings/:trainId` - Book a ticket
+- `GET /api/bookings` - View your bookings
+
+## Troubleshooting
+- Make sure MySQL service is running
+- Check if database credentials in `.env` are correct
+- Ensure all required ports are free (default: 5000)
+
 
 

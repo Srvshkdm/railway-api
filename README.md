@@ -37,11 +37,12 @@ mkdir railway-api && cd railway-api
 2. Create these folders:
 ```bash
 mkdir config models routes middlewares
+(Run these commands separately if dont run together as in whole (eg:- mkdir models))
 ```
 
 3. Create main files:
 ```bash
-touch server.js .env README.md
+touch server.js .env README.md(only one .env file will be present)
 ```
 
 Your project will look like this:
@@ -51,7 +52,11 @@ railway-api/
 ├── models/        
 ├── routes/        
 ├── middlewares/   
-└── server.js      # Main file
+└── server.js     # Main file
+├── .env
+├── package.json
+├── read.md
+├── package-lock.json(This file need not be created manually occurs after npm install)
 ```
 
 ## Installation
@@ -59,6 +64,8 @@ railway-api/
 1. Install Dependencies
 ```bash
 npm install express mysql2 sequelize dotenv jsonwebtoken bcryptjs body-parser cors helmet morgan
+**OR**
+npm intalll (this also works to install all needed dependencies)
 ```
 
 2. Start Server
@@ -68,11 +75,16 @@ node server.js
 
 ## Testing Guide
 
-**1)Download Postman in your PC**
+**1)Download Postman in your PC[https://www.postman.com/downloads/]**
+
 **2)Click New on Top left Corner n Select HTTP to test requests**
+
 **3)Select Method Type (POST,GET)**
+
 **4)Paste the Url Provided**
+
 **5)Change Headers n Body accordingly [Body is in json paste it as raw]**
+
 **6)Send the Methods**
 
 
@@ -149,6 +161,7 @@ GET http://localhost:5000/api/bookings
 - Make sure MySQL service is running
 - Check if database credentials in `.env` are correct
 - Ensure all required ports are free (default: 5000)
+- Dont mess up with the same Names 
 
 
 
